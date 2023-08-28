@@ -1,0 +1,20 @@
+FROM maven:latest as builder
+
+WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+COPY src ./src
+RUN mvn test
+
+FROM maven:latest
+
+WORKDIR /app
+COPY --from=builder /app /app
+
+RUN mvn package
+
+# Cambia al directorio de destino donde se encuentra el artefacto construido
+WORKDIR /app/target
+
+CMD ["java", "-jar", "microservice.jar"]
