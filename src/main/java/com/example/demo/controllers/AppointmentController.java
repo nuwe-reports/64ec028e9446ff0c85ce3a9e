@@ -3,6 +3,8 @@ package com.example.demo.controllers;
 import com.example.demo.repositories.*;
 import com.example.demo.entities.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,9 +30,36 @@ public class AppointmentController {
 
     @GetMapping("/appointments")
     public ResponseEntity<List<Appointment>> getAllAppointments(){
+
         List<Appointment> appointments = new ArrayList<>();
 
-        appointmentRepository.findAll().forEach(appointments::add);
+        // ****
+        Patient patient = new Patient("Jose Luis", "Olaya", 37, "j.olaya@email.com");
+        Doctor doctor = new Doctor ("Perla", "Amalia", 24, "p.amalia@hospital.accwe");
+        Room room = new Room("Dermatology");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
+
+        LocalDateTime startsAt= LocalDateTime.parse("19:30 24/04/2023", formatter);
+        LocalDateTime finishesAt = LocalDateTime.parse("20:30 24/04/2023", formatter);
+
+        Appointment appointment = new Appointment(patient, doctor, room, startsAt, finishesAt);
+/*
+        Patient patient2 = new Patient("Jose Antonio", "gg", 27, "ja.olaya@email.com");
+        Doctor doctor2 = new Doctor ("Victor", "Amalia", 14, "v.amalia@hospital.accwe");
+        Room room2 = new Room("Dermatology");
+
+        LocalDateTime startsAt2= LocalDateTime.parse("19:30 24/04/2023", formatter);
+        LocalDateTime finishesAt2 = LocalDateTime.parse("20:30 24/04/2023", formatter);
+
+        Appointment appointment2 = new Appointment(patient2, doctor2, room2, startsAt2, finishesAt2);
+        // ****
+*/
+        appointments.add(appointment);
+      //  appointments.add(appointment2);
+        // ****
+
+        appointments.addAll(appointmentRepository.findAll());
 
         if (appointments.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
