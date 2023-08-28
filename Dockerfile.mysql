@@ -1,0 +1,9 @@
+FROM mysql:latest
+
+
+ENV MYSQL_ROOT_PASSWORD=root_
+ENV MYSQL_DATABASE=accwe-hospital
+ENV MYSQL_USER=root
+ENV MYSQL_PASSWORD=
+
+# COPY ./db_init_scripts /docker-entrypoint-initdb.d
